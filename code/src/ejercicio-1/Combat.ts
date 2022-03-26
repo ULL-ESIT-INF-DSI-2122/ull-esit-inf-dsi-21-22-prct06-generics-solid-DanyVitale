@@ -19,18 +19,18 @@ import {Marvel} from "./Marvel";
  * ```
  */
 export class Combat {
-  constructor(private primerContrincante: Pokemon|DragonBall|Marvel, private segundoContrincante: Pokemon|DragonBall|Marvel) {
-    this.primerContrincante = primerContrincante;
-    this.segundoContrincante = segundoContrincante;
+  constructor(private primerContrincante: (Pokemon|DragonBall|Marvel), private segundoContrincante: (Pokemon|DragonBall|Marvel)) {
+    this.primerContrincante = this.primerContrincante;
+    this.segundoContrincante = this.segundoContrincante;
   }
 
   /**
   * Función calculateDMG() Devuelve el daño del ataque
-  * @param primerContrincante
-  * @param segundoContrincante
+  * @param this.primerContrincante
+  * @param this.segundoContrincante
   * @returns {number} Daño Ataque
   */
-  calculateDmg(primerContrincante: Pokemon|DragonBall|Marvel, segundoContrincante: Pokemon|DragonBall|Marvel): number {
+  calculateDmg(primerContrincante: (Pokemon|DragonBall|Marvel), segundoContrincante: (Pokemon|DragonBall|Marvel)): number {
     const superEffective: number = 2;
     const neutral: number = 1;
     const notEffective: number = 0.5;
@@ -204,29 +204,29 @@ export class Combat {
   * @param segundoContrincante
   * @returns {string} El ganador del combate
   */
-  start(primerContrincante: Pokemon|DragonBall|Marvel, segundoContrincante: Pokemon|DragonBall|Marvel): string {
+  start(): string {
     console.log(`Primero contrincante:`);
-    primerContrincante.printInfo();
+    this.primerContrincante.printInfo();
     console.log('\n');
     console.log(`Segundo contrincante:`);
-    segundoContrincante.printInfo();
+    this.segundoContrincante.printInfo();
     console.log('\n');
     console.log('Empieza el combate:');
 
     let hp1: number = 0;
     let hp2: number = 0;
 
-    while (primerContrincante.getHp() > hp1 && segundoContrincante.getHp() > hp2) {
-      hp2 += this.calculateDmg(primerContrincante, segundoContrincante);
+    while (this.primerContrincante.getHp() > hp1 && this.segundoContrincante.getHp() > hp2) {
+      hp2 += this.calculateDmg(this.primerContrincante, this.segundoContrincante);
       console.log(`Segundo contrincante -> HP = ${hp2}`);
-      hp1 += this.calculateDmg(segundoContrincante, primerContrincante);
+      hp1 += this.calculateDmg(this.segundoContrincante, this.primerContrincante);
       console.log(`Primer contrincante -> HP = ${hp1}`);
     }
 
-    if ( hp1 >= primerContrincante.getHp()) {
-      return segundoContrincante.getNombre();
+    if ( hp1 >= this.primerContrincante.getHp()) {
+      return this.segundoContrincante.getNombre();
     } else {
-      return primerContrincante.getNombre();
+      return this.primerContrincante.getNombre();
     }
   }
 }
