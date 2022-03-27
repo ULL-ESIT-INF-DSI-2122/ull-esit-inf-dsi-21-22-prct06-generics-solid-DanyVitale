@@ -12,7 +12,7 @@ export interface Streamable<T>{
  * Interfaz que permite imprimir la información
  */
 export interface PrintableInfo {
-    printInfo(): void
+  printInfo(): void
 }
 
 /**

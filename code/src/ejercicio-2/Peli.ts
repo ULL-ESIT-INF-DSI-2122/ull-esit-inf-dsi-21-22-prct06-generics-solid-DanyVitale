@@ -4,9 +4,9 @@
 import {BasicStreamableCollection} from "./BasicStreamableCollection";
 
 /**
- * Tipos de categorías
- */
- type Category = "Aventuras" | "Comedia" | "Acción" | "Drama";
+* Tipos de categorías
+*/
+ type Category = "Comedia" | "Acción" | "Drama";
 
 /**
  * Clase Peli que consta de atributos principales de una pelicula
@@ -17,15 +17,15 @@ export class Peli {
 }
 
 /**
- * Class that describes a collection of movies
- */
+* Clase que contiene el catalolo de las pelis
+*/
 export class PeliStreamable extends BasicStreamableCollection<Peli> {
   constructor(protected catalogo: Peli[]) {
     super(catalogo);
   }
   /**
-   * Prints the collection of movies with each attribute
-   */
+  * Imprime la información de cada película
+  */
   printInfo() {
     this.catalogo.forEach((peli) => {
       console.log(`Película: ${peli.name};`);

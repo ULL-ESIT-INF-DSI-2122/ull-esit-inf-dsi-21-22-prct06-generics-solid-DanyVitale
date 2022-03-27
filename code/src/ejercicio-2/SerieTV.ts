@@ -17,14 +17,14 @@ export class SerieTV {
 }
 
 /**
-* Class that describes a collection of movies
+* Clase que contiene el catalolo de las SerieTV
 */
 export class SerieTVStreamable extends BasicStreamableCollection<SerieTV> {
   constructor(protected catalogo: SerieTV[]) {
     super(catalogo);
   }
   /**
-  * Prints the collection of movies with each attribute
+  * Imprime la información
   */
   printInfo() {
     this.catalogo.forEach((serie) => {

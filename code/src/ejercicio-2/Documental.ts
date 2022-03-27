@@ -3,22 +3,24 @@
  */
 import {BasicStreamableCollection} from "./BasicStreamableCollection";
 
+type Category = "DocuDrama"|"Histórico"|"Moderno";
+
 /**
 * Clase Peli que consta de atributos principales de una pelicula
 */
 export class Documental {
-  constructor(public name: string, public year: number, public durac: number) {
+  constructor(public name: string, public year: number, public durac: number, public category: Category) {
   }
 }
 /**
-* Class that describes a collection of movies
+* Clase que contiene el catalolo de los documentales
 */
 export class DocumentalStreamable extends BasicStreamableCollection<Documental> {
   constructor(protected catalogo: Documental[]) {
     super(catalogo);
   }
   /**
-  * Prints the collection of movies with each attribute
+  * Imprime la información
   */
   printInfo() {
     this.catalogo.forEach((doc) => {

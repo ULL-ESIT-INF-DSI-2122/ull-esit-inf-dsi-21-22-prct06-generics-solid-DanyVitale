@@ -3,7 +3,7 @@
  */
 import {SearchableCollection, Streamable} from "./Streamable";
 
-export abstract class BasicStreamableCollection<T extends {name: string, year: number}> implements Streamable<T>, SearchableCollection<T> {
+export abstract class BasicStreamableCollection<T extends {name: string, year: number, category: string}> implements Streamable<T>, SearchableCollection<T> {
   constructor(protected catalogo: T[]) {
     this.catalogo = catalogo;
   }
@@ -67,6 +67,15 @@ export abstract class BasicStreamableCollection<T extends {name: string, year: n
    */
   searchByYear(year: number): T[] {
     return this.catalogo.filter((stream) => stream.year === (year));
+  }
+
+  /**
+   * Filtrar segùn la categoría
+   * @param cat
+   * @returns {T[]}
+   */
+  searchByCategory(cat: string): T[] {
+    return this.catalogo.filter((stream) => stream.category === (cat));
   }
 
   /**

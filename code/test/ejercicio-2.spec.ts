@@ -7,9 +7,9 @@ import {BasicStreamableCollection} from '../src/ejercicio-2/BasicStreamableColle
 
 describe('Ejercicio 2 - tests/documentales', () => {
   // Creación Objetos
-  const TSD: Documental = new Documental("The Social Dilemma", 2020, 94);
-  const theGreatHack: Documental = new Documental("The Great Hack", 2019, 140);
-  const audible: Documental = new Documental("Audible", 2021, 39);
+  const TSD: Documental = new Documental("The Social Dilemma", 2020, 94, "DocuDrama");
+  const theGreatHack: Documental = new Documental("The Great Hack", 2019, 140, "Moderno");
+  const audible: Documental = new Documental("Audible", 2021, 39, "Moderno");
   const catalogo = new DocumentalStreamable([theGreatHack, audible]);
 
   it('Catalogo hereda de BasicStreamableCollection', () => {
@@ -34,15 +34,16 @@ describe('Ejercicio 2 - tests/documentales', () => {
     expect(catalogo.getNumberOfStreams()).to.be.equal(3);
   });
 
-  it('El método removeStream funciona correctamente', () => {
+  it('El método deleteStream funciona correctamente', () => {
     catalogo.deleteStream("The Social Dilemma");
     expect(catalogo.getCatalogo()).to.be.eql([theGreatHack, audible]);
   });
 
   it('Los métodos Searchable funcionan correctamente', () => {
     expect(catalogo.searchByName("The Great Hack")).to.be.eql([theGreatHack]);
-    expect(catalogo.searchByYear(1717)).to.be.eql([]);
     expect(catalogo.searchByYear(2019)).to.be.eql([theGreatHack]);
+    expect(catalogo.searchByYear(1717)).to.be.eql([]);
+    expect(catalogo.searchByCategory("Moderno")).to.be.eql([theGreatHack, audible]);
   });
 });
 
@@ -75,7 +76,7 @@ describe('Ejercicio 2 - tests/SerieTV', () => {
     expect(catalogo.getNumberOfStreams()).to.be.equal(3);
   });
 
-  it('El método removeStream funciona correctamente', () => {
+  it('El método deleteStream funciona correctamente', () => {
     catalogo.deleteStream("Alex Rider");
     expect(catalogo.getCatalogo()).to.be.eql([PB, BL]);
   });
@@ -84,6 +85,7 @@ describe('Ejercicio 2 - tests/SerieTV', () => {
     expect(catalogo.searchByName("Peaky Blinders")).to.be.eql([PB]);
     expect(catalogo.searchByYear(1717)).to.be.eql([]);
     expect(catalogo.searchByYear(2013)).to.be.eql([PB, BL]);
+    expect(catalogo.searchByCategory("Drama")).to.be.eql([PB, BL]);
   });
 });
 
@@ -116,7 +118,7 @@ describe('Ejercicio 2 - tests/Peli', () => {
     expect(catalogo.getNumberOfStreams()).to.be.equal(3);
   });
 
-  it('El método removeStream funciona correctamente', () => {
+  it('El método deleteStream funciona correctamente', () => {
     catalogo.deleteStream("Avatar");
     expect(catalogo.getCatalogo()).to.be.eql([dlu, twws]);
   });
@@ -125,5 +127,6 @@ describe('Ejercicio 2 - tests/Peli', () => {
     expect(catalogo.searchByName("The Wolf of Wall Street")).to.be.eql([twws]);
     expect(catalogo.searchByYear(1717)).to.be.eql([]);
     expect(catalogo.searchByYear(2021)).to.be.eql([dlu]);
+    expect(catalogo.searchByCategory("Drama")).to.be.eql([twws]);
   });
 });
