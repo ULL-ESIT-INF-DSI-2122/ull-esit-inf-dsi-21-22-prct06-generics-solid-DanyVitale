@@ -22,7 +22,8 @@ ejercicios.
 
 Antes de empezar hay que hacer una serie de tareas previas que comprenden lo siguiente:
 - [x] Aceptar la [asignación de GitHub Classroom](https://classroom.github.com/a/8XJ_zRAs) asociada a esta práctica.
-- [x] En esta práctica, solo se podrá comunicar con el profesorado para cualquier tipo de incidencia relacionada con la misma a través de los issues de GitHub del repositorio asignado.
+- [x] En esta práctica, solo se podrá comunicar con el profesorado para cualquier tipo de incidencia relacionada con la misma a través de los issues de 
+GitHub del repositorio asignado.
 - [x] Es obligatorio el uso las herramientas para obtener un informe sobre el cubrimiento del código que hemos desarrollado, gracias 
 a la ejecución de la batería de pruebas diseñada([Instanbul](https://istanbul.js.org/) y [Coveralls](https://coveralls.io/)). Además de las páginas
 propuestas, el profesor propone un video presente en el aula virtual de la asignatura y que ilustra la configuración y uso de estas herramientas.
@@ -266,7 +267,8 @@ Por último, cabe destacar que desarrollé este ejercicio empleando los principi
 ### **EJERCICIO 2**<a name="id4"></a>
 Pasando al ejercicio 2 el enunciado pide diseñar el modelo de datos de una plataforma de vídeo en streaming. 
 A través del catálogo de dicha plataforma se puede acceder a películas, series y documentales:
-Lo primero que se hizo fue implementar una interfaz genérica ```Streamable``` que trate de especificar propiedades y métodos con los que debería contar una colección de emisiones concreta. A continuación se le ilustra la propuesta de la interfaz:
+Lo primero que se hizo fue implementar una interfaz genérica ```Streamable``` que trate de especificar propiedades y métodos con los que debería contar 
+una colección de emisiones concreta. A continuación se le ilustra la propuesta de la interfaz:
 ```typescript
 /**
  * Interfaz que contiene métodos para manibular el catálogo
@@ -291,6 +293,7 @@ export interface PrintableInfo {
 export interface SearchableCollection<T> {
   searchByName(name: string): T[];
   searchByYear(year: number): T[];
+  searchByCategory(cat: string): T[];
 }
 ```
 Donde lo que contiene la interfaz principal es una serie de métodos "estándares" donde se pueden añadir, eliminar o obtener elementos u obtener uno en 
@@ -371,6 +374,15 @@ export abstract class BasicStreamableCollection<T extends {name: string, year: n
   searchByYear(year: number): T[] {
     return this.catalogo.filter((stream) => stream.year === (year));
   }
+  
+  /**
+   * Filtrar segùn la categoría
+   * @param cat
+   * @returns {T[]}
+   */
+  searchByCategory(cat: string): T[] {
+    return this.catalogo.filter((stream) => stream.category === (cat));
+  }
 
   /**
    * Imprimir la información del elemento
@@ -379,7 +391,8 @@ export abstract class BasicStreamableCollection<T extends {name: string, year: n
 }
 ```
 Como se puede apreciar en el cuadro de código, se extendió la clase genérica implementando las interfaces mencionadas (SearchableCollection y 
-StreamableCollection) y se implementaron los varios métodos contenidas en ellas (addStream, searchByYear, etc...). Sin embargo, sigue el método ```printInfo()``` sin desarrollar (en modo abstracto) ya que su implementación puede variar aún entre clases. El único atributo que implementa es el 
+StreamableCollection) y se implementaron los varios métodos contenidas en ellas (addStream, searchByYear, etc...). Sin embargo, sigue el método 
+```printInfo()``` sin desarrollar (en modo abstracto) ya que su implementación puede variar aún entre clases. El único atributo que implementa es el 
 catálogo(y tiene su método ```get```).
 
 Se implementaron las tres clases: Peli, SerieTV y Documental. Es importante decir que sus estructuras son muy similares.
@@ -404,14 +417,14 @@ export class Peli {
 }
 
 /**
- * Class that describes a collection of movies
+ * Clase que contiene el catalogo de las pelis
  */
 export class PeliStreamable extends BasicStreamableCollection<Peli> {
   constructor(protected catalogo: Peli[]) {
     super(catalogo);
   }
   /**
-   * Prints the collection of movies with each attribute
+   * Imprime la información de cada película
    */
   printInfo() {
     this.catalogo.forEach((peli) => {
@@ -425,7 +438,9 @@ export class PeliStreamable extends BasicStreamableCollection<Peli> {
 }
 ```
 Empezando con la estructura de la clase ```Peli```, como se puede apreciar en el cuadro, se crea con cinco elementos y servirá para darle la forma a la 
-otra clase creada: ```PeliStreamable```. Ésta última se extiende con la clase ```BasicStreamableCollection``` pasándole como parámetro la clase anteriormente creada. Contiene un elemento que es el catalogo y es un array de tipo Peli. Finalmente dentro de ella solo se implementó el método PrintInfo, que resalta sus atributos.
+otra clase creada: ```PeliStreamable```. Ésta última se extiende con la clase ```BasicStreamableCollection``` pasándole como parámetro la clase 
+anteriormente creada. Contiene un elemento que es el catálogo y es un array de tipo Peli. Finalmente dentro de ella solo se implementó el método 
+PrintInfo, que resalta sus atributos.
 ```typescript
 /**
  * Importar BasicStreamableCollection
@@ -466,7 +481,9 @@ export class SerieTVStreamable extends BasicStreamableCollection<SerieTV> {
 }
 ```
 Seguimos con la estructura de la clase ```SerieTV```, como se puede apreciar, consta de cuatro elementos y servirá para darle la forma a 
-la otra clase creada: ```SerieTVStreamable```. Ésta última se extiende con la clase ```BasicStreamableCollection``` pasándole como parámetro la clase anteriormente creada. Contiene un elemento que es el catalogo y es un array de tipo SerieTV. Finalmente dentro de ella solo se implementó el método PrintInfo, que resalta sus atributos.
+la otra clase creada: ```SerieTVStreamable```. Ésta última se extiende con la clase ```BasicStreamableCollection``` pasándole como parámetro la clase 
+anteriormente creada. Contiene un elemento que es el catalogo y es un array de tipo SerieTV. Finalmente dentro de ella solo se implementó el método 
+PrintInfo, que resalta sus atributos.
 
 ```typescript
 /**
@@ -474,22 +491,24 @@ la otra clase creada: ```SerieTVStreamable```. Ésta última se extiende con la 
  */
 import {BasicStreamableCollection} from "./BasicStreamableCollection";
 
+type Category = "DocuDrama"|"Histórico"|"Moderno";
+
 /**
-* Clase Peli que consta de atributos principales de una pelicula
+* Clase Documental que consta de atributos principales de una pelicula
 */
 export class Documental {
-  constructor(public name: string, public year: number, public durac: number) {
+  constructor(public name: string, public year: number, public durac: number, public category: Category) {
   }
 }
 /**
-* Class that describes a collection of movies
+* Clase que contiene el catalolo de los documentales
 */
 export class DocumentalStreamable extends BasicStreamableCollection<Documental> {
   constructor(protected catalogo: Documental[]) {
     super(catalogo);
   }
   /**
-  * Prints the collection of movies with each attribute
+  * Imprime la información
   */
   printInfo() {
     this.catalogo.forEach((doc) => {
@@ -500,29 +519,129 @@ export class DocumentalStreamable extends BasicStreamableCollection<Documental> 
   }
 }
 ```
-Seguimos con la estructura de la clase ```Documental```, que consta de dos elementos y servirá para la creación de la clase: ```DocumentalStreamable```. Ésta última se extiende con la clase ```BasicStreamableCollection``` pasándole como parámetro la clase anteriormente creada. Contiene un elemento que es el catalogo y es un array de tipo Documental. Implementa el método PrintInfo, igual que la precedentes dos clases.
+Seguimos con la estructura de la clase ```Documental```, que consta de dos elementos y servirá para la creación de la clase: ```DocumentalStreamable```. 
+Ésta última se extiende con la clase ```BasicStreamableCollection``` pasándole como parámetro la clase anteriormente creada. Contiene un elemento que es 
+el catalogo y es un array de tipo Documental. Implementa el método PrintInfo, igual que la precedentes dos clases.
 
 ### **EJERCICIO 3**<a name="id5"></a>
+Para la implementación del tercero y último ejercicio, se propone desarrollar el [Cifrado César](https://es.wikipedia.org/wiki/Cifrado_C%C3%A9sar), donde 
+cada letra de un alfabeto se desplaza cierto número de posiciones. 
+Fue necesario crear únicamente una clase que recibiera como parámetros: texto, clave, alfabeto y desplazamiento.
 
 ```typescript
+/**
+ * Clase Cifrado utilizada para poder cifrar o decifrar un mensaje
+ */
+export class Cifrado {
+  constructor(private clave: string, private text: string, private alfabeto: string, private desp: number) {
+    this.clave = clave;
+    this.text = text;
+    this.alfabeto = alfabeto;
+    this.desp = desp;
+  }
 
+  /**
+   * Obtener la clave
+   * @returns {string}
+   */
+  getClave() {
+    return this.clave;
+  }
+  /**
+   * Obtener el numero de desplazamientos
+   * @returns {number}
+   */
+  getDesp() {
+    return this.desp;
+  }
+
+  /**
+   * Obtener el texto
+   * @returns {string}
+   */
+  getText() {
+    return this.text;
+  }
+
+  /**
+   * Obtener el alfabeto
+   * @returns {string}
+   */
+  getAlfabeto() {
+    return this.alfabeto;
+  }
+
+  /**
+   * Remover posibles espacios
+   * @returns {string}
+   */
+  fusionText(m: string) {
+    return m.replace(/ /g, "");
+  }
+
+
+  cifrar(): string {
+    let res: string = '';
+    let temp: number;
+    let salto: number = 0;
+    const newText: string = this.fusionText(this.text);
+    const newKey: string = this.fusionText(this.clave);
+
+    for (let i = 0; i < newText.length; i++) {
+      for (let j = 0; j < newKey.length; j++) {
+        if (res.length === newText.length) return res;
+        desp = this.alfabeto.indexOf(newKey[j]) + this.getDesp();
+        temp = (this.alfabeto.indexOf(newText[i]) + salto) % this.alfabeto.length;
+        res += this.alfabeto[temp];
+        i++;
+      }
+      i--;
+    }
+
+    return res;
+  }
+
+  /**
+   * Decifrar el mensaje
+   * @returns {string}
+   */
+  decifrar(): string {
+    let res: string = '';
+    let temp: number;
+    let salto: number;
+    const newText: string = this.fusionText(this.text);
+    const newKey: string = this.fusionText(this.clave);
+
+    for (let i = 0; i < newText.length; i++) {
+      for (let j = 0; j < newKey.length; j++) {
+        if (res.length === newText.length) return res;
+        salto = this.alfabeto.indexOf(newKey[j]) + getDesp();
+        temp = (this.alfabeto.indexOf(newText[i]) - salto + this.alfabeto.length) % this.alfabeto.length;
+        res += this.alfabeto[temp];
+        i++;
+      }
+      i--;
+    }
+    return res;
+  }
+}
 ```
-
-
-```typescript
-
-```
-
-```typescript
-
-```
-
-
-
-```typescript
-
-```
+Como se puede observar en la clase hay, además de los sólitos getters para poder obtener los atributos de manera singular, tres métodos principales:
+- **fusionText**: Su función se basa en quitar los carácteres representados como espacios para evitar problemas a la hora de ejecutar la operación de
+cifrado o decifrado. Para ello se hace uso de un simple ```replace```.
+- **Cifrar**: Se basa en realizar el procedimiento de cifrado. Las primeras operaciones que se hacen, consisten en llamar a la función anteriormente 
+mencionada tanto para la clave como para el texto. A continuación, recorriendo la clave y el texto (en cada iteración), creamos una variable salto que lo 
+que hará es darnos el valor de salto del char sustitutivo. 
+Asignamos el valor de la letra a una variable ```temp``` sumando el salto con el valor obtenido de la posición según el texto y la iteración actual y, 
+además para evitar que salga del rango implementamos la operación del resto(%) con la longitus del alfabeto.
+posición del index que calculamos y, además para evitar que salga del rango implementamos la operación del resto(%) con la longitud del alfabeto.
+Finalmente lo obtenido lo sumamos al resultado.
+- **Decifrar**: El procedimiento es muy similar al descrito anteriormente, la única diferencia se encuentra a la hora de calcular la primara parte del 
+valor de ```temp```. La operación sería justo la inversa, es decir, restar el salto y sumarle la longitud del alfabeto al valor que se obtiene de index 
+del alfabeto.
 
 ## **CONCLUSIÓN**<a name="id6"></a>
 En conclusión podemos afirmar que esta práctica resultó muy útil a la hora de profudizar los conceptos vistos en clase. Cabe decir que se intentó hacer
 buen uso e implementación de los principios SOLID, sobretodo los mencionados en los ejercicios 1 y 2.
+
+La práctica me ayudó a mejorar mi conocimiento sobretodo en cuánto a las interfaces y clases genéricas.
