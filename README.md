@@ -261,7 +261,7 @@ export class Pokedex {
   }
 }
 ```
-Como podemos observar la clase solo consta de un elemento que, como mencionado anteriormente, es el pokedex y contiene todos los luchadores.ù
+Como podemos observar la clase solo consta de un elemento que, como mencionado anteriormente, es el pokedex y contiene todos los luchadores.
 Por último, cabe destacar que desarrollé este ejercicio empleando los principios SOLID Single Responsability y Open-Closed.
 
 ### **EJERCICIO 2**<a name="id4"></a>
@@ -296,9 +296,9 @@ export interface SearchableCollection<T> {
   searchByCategory(cat: string): T[];
 }
 ```
-Donde lo que contiene la interfaz principal es una serie de métodos "estándares" donde se pueden añadir, eliminar o obtener elementos u obtener uno en 
+Lo que contiene la interfaz principal es una serie de métodos "estándares" donde se pueden añadir, eliminar o obtener elementos u obtener uno en 
 concreto.
-A continuación, creè otras dos interfaces "Streamable": una para impimir la información y la otra para búsquedas que comprenden la del nombre y la del 
+A continuación, creé otras dos interfaces "Streamable": una para impimir la información y la otra para búsquedas que comprenden la del nombre y la del 
 año de estreno. Esto porque es fundamental en este ejercicio seguir el principio SOLID *Interface segregation.*
 
 El siguiente paso fue crear una clase abstracta genérica BasicStreamableCollection que implemente la interfaz genérica recién mencionada.
@@ -391,7 +391,7 @@ export abstract class BasicStreamableCollection<T extends {name: string, year: n
 }
 ```
 Como se puede apreciar en el cuadro de código, se extendió la clase genérica implementando las interfaces mencionadas (SearchableCollection y 
-StreamableCollection) y se implementaron los varios métodos contenidas en ellas (addStream, searchByYear, etc...). Sin embargo, sigue el método 
+StreamableCollection) y se implementaron los varios métodos contenidos en ellas (addStream, searchByYear, etc...). Sin embargo, sigue el método 
 ```printInfo()``` sin desarrollar (en modo abstracto) ya que su implementación puede variar aún entre clases. El único atributo que implementa es el 
 catálogo(y tiene su método ```get```).
 
@@ -461,14 +461,14 @@ export class SerieTV {
 }
 
 /**
-* Class that describes a collection of movies
+*
 */
 export class SerieTVStreamable extends BasicStreamableCollection<SerieTV> {
   constructor(protected catalogo: SerieTV[]) {
     super(catalogo);
   }
   /**
-  * Prints the collection of movies with each attribute
+  * Imprimir los atributos de una serie
   */
   printInfo() {
     this.catalogo.forEach((serie) => {
@@ -482,7 +482,7 @@ export class SerieTVStreamable extends BasicStreamableCollection<SerieTV> {
 ```
 Seguimos con la estructura de la clase ```SerieTV```, como se puede apreciar, consta de cuatro elementos y servirá para darle la forma a 
 la otra clase creada: ```SerieTVStreamable```. Ésta última se extiende con la clase ```BasicStreamableCollection``` pasándole como parámetro la clase 
-anteriormente creada. Contiene un elemento que es el catalogo y es un array de tipo SerieTV. Finalmente dentro de ella solo se implementó el método 
+anteriormente creada. Contiene un elemento que es el catálogo y es un array de tipo SerieTV. Finalmente dentro de ella solo se implementó el método 
 PrintInfo, que resalta sus atributos.
 
 ```typescript
@@ -501,7 +501,7 @@ export class Documental {
   }
 }
 /**
-* Clase que contiene el catalolo de los documentales
+* Clase que contiene el catalogo de los documentales
 */
 export class DocumentalStreamable extends BasicStreamableCollection<Documental> {
   constructor(protected catalogo: Documental[]) {
@@ -521,7 +521,7 @@ export class DocumentalStreamable extends BasicStreamableCollection<Documental> 
 ```
 Seguimos con la estructura de la clase ```Documental```, que consta de dos elementos y servirá para la creación de la clase: ```DocumentalStreamable```. 
 Ésta última se extiende con la clase ```BasicStreamableCollection``` pasándole como parámetro la clase anteriormente creada. Contiene un elemento que es 
-el catalogo y es un array de tipo Documental. Implementa el método PrintInfo, igual que la precedentes dos clases.
+el catálogo y es un array de tipo Documental. Implementa el método PrintInfo, igual que la precedentes dos clases.
 
 ### **EJERCICIO 3**<a name="id5"></a>
 Para la implementación del tercero y último ejercicio, se propone desarrollar el [Cifrado César](https://es.wikipedia.org/wiki/Cifrado_C%C3%A9sar), donde 
@@ -629,14 +629,13 @@ export class Cifrado {
 Como se puede observar en la clase hay, además de los sólitos getters para poder obtener los atributos de manera singular, tres métodos principales:
 - **fusionText**: Su función se basa en quitar los carácteres representados como espacios para evitar problemas a la hora de ejecutar la operación de
 cifrado o decifrado. Para ello se hace uso de un simple ```replace```.
-- **Cifrar**: Se basa en realizar el procedimiento de cifrado. Las primeras operaciones que se hacen, consisten en llamar a la función anteriormente 
+- **Cifrar**: Se basa en realizar el procedimiento de cifrado. Las primeras operaciones que se hacen consisten en llamar a la función anteriormente 
 mencionada tanto para la clave como para el texto. A continuación, recorriendo la clave y el texto (en cada iteración), creamos una variable salto que lo 
-que hará es darnos el valor de salto del char sustitutivo. 
-Asignamos el valor de la letra a una variable ```temp``` sumando el salto con el valor obtenido de la posición según el texto y la iteración actual y, 
-además para evitar que salga del rango implementamos la operación del resto(%) con la longitus del alfabeto.
-posición del index que calculamos y, además para evitar que salga del rango implementamos la operación del resto(%) con la longitud del alfabeto.
-Finalmente lo obtenido lo sumamos al resultado.
-- **Decifrar**: El procedimiento es muy similar al descrito anteriormente, la única diferencia se encuentra a la hora de calcular la primara parte del 
+que hará es darnos el valor de salto del ```char``` sustitutivo. 
+Asignamos el valor de la letra a una variable ```temp``` sumando el salto con el valor obtenido de la posición según el texto y la iteración actual. 
+Además, para evitar que salga del rango implementamos la operación del resto(%) con la longitud del alfabeto. Finalmente lo obtenido lo sumamos al 
+resultado.
+- **Decifrar**: El procedimiento es muy similar al descrito anteriormente, la única diferencia se encuentra a la hora de calcular la primera parte del 
 valor de ```temp```. La operación sería justo la inversa, es decir, restar el salto y sumarle la longitud del alfabeto al valor que se obtiene de index 
 del alfabeto.
 
