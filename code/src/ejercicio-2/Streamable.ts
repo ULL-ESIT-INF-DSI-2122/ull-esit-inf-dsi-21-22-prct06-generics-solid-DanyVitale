@@ -21,5 +21,6 @@ export interface PrintableInfo {
 export interface SearchableCollection<T> {
   searchByName(name: string): T[];
   searchByYear(year: number): T[];
+  searchByCategory(cat: string): T[];
 }
 
